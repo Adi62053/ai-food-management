@@ -1,0 +1,269 @@
+/* General App Styling */
+.dashboard {
+  min-height: 100vh;
+  background: url("/background1.jpg") no-repeat center center fixed;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Navbar Styling */
+.navbar {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  width: 100%; /* Full width of the screen */
+  height: 60px; /* You can adjust height */
+  display: grid;
+  grid-template-columns: auto 1fr auto; /* Logo - Links - Right section */
+  align-items: center;
+  padding: 0 30px;
+  background: transparent;
+  z-index: 100; /* Make sure it’s on top */
+}
+
+.logo {
+  height: 50px;
+  width: auto;       /* Maintain aspect ratio */
+  object-fit: contain; /* Prevent stretching */
+  justify-self: start;
+}
+
+.nav-links {
+  display: flex;
+  gap: 30px;
+  justify-content: center; /* Center the nav links */
+  
+}
+
+.right-section {
+  justify-self: end; /* Right align the login button */
+}
+
+.nav-btn {
+  padding: 8px 15px;
+  background-color: #ff9800;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.nav-btn:hover {
+  background-color: #e68a00;
+}
+
+
+/* Dashboard Content */
+.dashboard-content {
+  flex: 1;
+  position: absolute;
+  top: 100px;  /* distance from top of the screen */
+  left: 435px; /* distance from left of the screen */
+  font-size: 12px;
+  color: #1E3A8A;
+  text-align: center;
+}
+/* Login Box Styling */
+.login-box {
+  position: absolute;
+  top: 200px;  /* Adjust vertical position */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  padding: 25px;
+  background: rgba(255, 255, 255, 0.9); /* Slight transparency */
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.login-box h2 {
+  margin-bottom: 20px;
+  color: #1E3A8A;
+}
+
+.login-input {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  background-color: #ff9800;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.login-btn:hover {
+  background-color: #066f1d;
+}
+/* 🟢 Popup Overlay */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4); /* semi-transparent background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 🟢 Popup Box */
+.popup-box {
+  background: #fff;
+  padding: 20px 30px;
+  border-radius: 10px;
+  text-align: center;
+  width: 300px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* 🟢 Popup Buttons */
+
+.popup-btn1 {
+  display: block;
+  margin: 10px auto;
+  padding: 10px;
+  width: 80%;
+  background: #0078d4; /* professional pink */
+  border: none;
+  color: white;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.popup-btn1:hover {
+  background: #005ea6;
+}
+.popup-btn2 {
+  padding: 10px;
+  background: #0078d4;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+  width: 50%;
+}
+
+.popup-btn2:hover {
+  background: #005ea6; 
+  ;
+}
+
+.close-btn {
+  margin-top: 15px;
+  background: #ccc;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.close-btn:hover {
+  background: #999;
+}
+/* Popup overlay */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+/* Popup box */
+.popup-box {
+  background: #fff;
+  padding: 25px;
+  border-radius: 10px;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
+}
+
+/* Popup buttons */
+.popup-btn {
+  padding: 10px;
+  background: #0078d4;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.popup-btn:hover {
+  background: #005ea6;
+}
+
+.close-btn {
+  padding: 10px;
+  background: #ff4d4d;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.close-btn:hover {
+  background: #cc0000;
+}
+
+/* Inputs in popup */
+.popup-box input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.toggle-login-btn {
+  padding: 6px 12px; /* Smaller padding */
+  font-size: 14px; /* Smaller text size */
+  background-color: #ff9800;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  margin-top: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  display: inline-block; /* Prevents text overlay issues */
+  line-height: 1.2; /* Keeps text vertically centered */
+  white-space: nowrap; /* Prevents text from breaking into two lines */
+}
+
+
+.toggle-login-btn:hover{
+  background: #cc0000;
+}
+.forgot-code-link {
+  font-size: 0.85rem;
+  color: #007bff;
+  text-decoration: none;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.forgot-code-link:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}

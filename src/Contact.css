@@ -1,0 +1,18 @@
+.page-container2 {
+    min-height: 100vh;
+    background: url("/background1.jpg") no-repeat center center fixed;
+    background-size: cover;
+    padding-top: 80px;
+    text-align: center;
+    color: #1E3A8A;
+  }
+  
+  .page-container2 h1 {
+    font-size: 4.5rem;
+    margin-bottom: 15px;
+  }
+  
+  .page-container2 p {
+    font-size: 1.2rem;
+  }
+  
