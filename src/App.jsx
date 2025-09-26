@@ -231,7 +231,7 @@ function Layout({ children, showLogin = false }) {
     <div className="dashboard">
       {/* Top Navigation Bar */}
       <div className="navbar">
-      <img src="/logo1.png" className="logo" alt="Logo" />
+      <img src="/ai-food-management/logo1.png" className="logo" alt="Logo" />
 
 
         <div className="nav-links">
