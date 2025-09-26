@@ -10,7 +10,7 @@ function About() {
       {/* About Page Content */}
       <div className="About1">
         <h1>About U</h1>
-        <p>This is the About Page of AI Food Management Portal.</p>
+        <p>This is the About.</p>
       </div>
     </div>
   );
