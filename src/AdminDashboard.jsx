@@ -1,23 +1,23 @@
 import React from "react";
-import "./AdminDashboard.css"; // or rename to AdminDashboard.css for consistency
+import "./AdminDashboard.css";
 
 function AdminDashboard() {
   const handleLogoutClick = () => {
+    localStorage.removeItem("username");
     alert("Logged out successfully!");
-    // Example: redirect to login page
-    // window.location.href = "/login";
+    window.location.href = "/";
   };
 
   return (
     <div className="admin-dashboard">
-      <div className="navbar">
-      <img src="/ai-food-management/logo1.png" className="logo" alt="Logo" />
-        <button className="logout-btn" onClick={handleLogoutClick}>
-      Log-out
-    </button>
-        </div>
+      <div className="admin-navbar">
+        <img src="/ai-food-management/logo1.png" className="admin-logo" alt="Logo" />
+        <button className="admin-logout-btn" onClick={handleLogoutClick}>
+          Log-out
+        </button>
+      </div>
 
-      <main className="dashboard-content">
+      <main className="admin-dashboard-content">
         <h1>Welcome Admin Portal</h1>
       </main>
     </div>

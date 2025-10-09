@@ -1,5 +1,5 @@
-/* CustomerDashboard.css */
-.customerdashboard {
+/* CustomerDashboard.css - Unique classes to avoid conflicts */
+.customer-dashboard {
   min-height: 100vh;
   background-color: white;
   background-size: cover;
@@ -7,7 +7,7 @@
   flex-direction: column;
 }
 
-.dashboard-content {
+.customer-dashboard-content {
   flex: 1;
   position: absolute;
   top: 100px;
@@ -18,25 +18,42 @@
   text-align: center;
 }
 
-.navbar {
+.customer-navbar {
   position: absolute;
   top: 10px;
   left: 0;
   width: 100%;
   height: 60px;
-  display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
+  display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 0 30px;
   background: transparent;
+  box-sizing: border-box;
 }
 
-.logo {
+.customer-logo {
   height: 50px;
-  justify-self: start;
+  flex-shrink: 0;
 }
 
-.logout-btn {
+/* User Section - Username and Logout side by side */
+.customer-user-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-shrink: 0;
+}
+
+/* Username in red color */
+.customer-username {
+  color: red !important;
+  font-weight: bold;
+  font-size: 16px;
+  white-space: nowrap;
+}
+
+.customer-logout-btn {
   padding: 8px 15px;
   background-color: #ff9800;
   border: none;
@@ -44,32 +61,39 @@
   color: white;
   font-weight: bold;
   cursor: pointer;
-  justify-self: end;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
-.logout-btn:hover {
+.customer-logout-btn:hover {
   background-color: #e68a00;
 }
 
-.search-store-container {
+.customer-search-container {
   position: relative;
   display: flex;
   gap: 10px;
-  justify-self: center;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  max-width: 400px;
+  margin: 0 20px;
 }
 
-.store-select {
+.customer-store-select {
   padding: 5px 10px;
   border-radius: 5px;
+  flex-shrink: 0;
 }
 
-.search-input {
+.customer-search-input {
   padding: 5px 10px;
   border-radius: 5px;
   width: 200px;
+  flex-shrink: 0;
 }
 
-.search-dropdown {
+.customer-search-dropdown {
   position: absolute;
   top: 35px;
   left: 0;
@@ -80,7 +104,7 @@
   z-index: 10;
 }
 
-.search-item {
+.customer-search-item {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -88,7 +112,7 @@
   cursor: pointer;
 }
 
-.search-item img {
+.customer-search-item img {
   width: 40px;
   height: 40px;
   border-radius: 5px;

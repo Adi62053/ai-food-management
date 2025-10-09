@@ -1,6 +1,6 @@
 // src/CustomerDashboard.jsx
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // navigation
+import { useNavigate } from "react-router-dom";
 import foodItems from "./FoodData";
 import "./CustomerDashboard.css";
 
@@ -12,39 +12,36 @@ function CustomerDashboard() {
 
   const stores = ["Guntur", "Vijayawada", "Hyderabad"];
 
-  // ✅ Load username from localStorage when page loads
   useEffect(() => {
     const user = localStorage.getItem("username");
     if (user) {
       setUsername(user);
     } else {
-      navigate("/"); // redirect if not logged in
+      navigate("/");
     }
   }, [navigate]);
 
-  // ✅ Logout function
   const handleLogoutClick = () => {
     localStorage.removeItem("username");
-    localStorage.removeItem("customerId"); // optional
+    localStorage.removeItem("customerId");
     alert("Logged out successfully!");
-    navigate("/"); // redirect to home
+    navigate("/");
   };
 
-  // ✅ Filter search
   const filteredFood = foodItems.filter(item =>
     item.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
-    <div className="customerdashboard">
+    <div className="customer-dashboard">
       {/* Top Navigation Bar */}
-      <div className="navbar">
-        <img src="/ai-food-management/logo1.png" className="logo" alt="Logo" />
+      <div className="customer-navbar">
+        <img src="/ai-food-management/logo1.png" className="customer-logo" alt="Logo" />
 
         {/* Store Selector + Search Bar */}
-        <div className="search-store-container">
+        <div className="customer-search-container">
           <select
-            className="store-select"
+            className="customer-store-select"
             value={selectedStore}
             onChange={(e) => setSelectedStore(e.target.value)}
           >
@@ -55,17 +52,16 @@ function CustomerDashboard() {
 
           <input
             type="text"
-            className="search-input"
+            className="customer-search-input"
             placeholder="Search food..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
 
-          {/* Search suggestions dropdown */}
           {searchTerm && filteredFood.length > 0 && (
-            <div className="search-dropdown">
+            <div className="customer-search-dropdown">
               {filteredFood.map(item => (
-                <div className="search-item" key={item.id}>
+                <div className="customer-search-item" key={item.id}>
                   <img src={item.image} alt={item.name} />
                   <span>{item.name}</span>
                 </div>
@@ -74,17 +70,17 @@ function CustomerDashboard() {
           )}
         </div>
 
-        {/* Username and Logout */}
-        <div className="user-section">
-          <span className="username-display">👤 {username}</span>
-          <button className="logout-btn" onClick={handleLogoutClick}>
+        {/* Username and Logout - Side by Side */}
+        <div className="customer-user-section">
+          <span className="customer-username">👤 {username}</span>
+          <button className="customer-logout-btn" onClick={handleLogoutClick}>
             Log-out
           </button>
         </div>
       </div>
 
       {/* Dashboard Content */}
-      <main className="dashboard-content">
+      <main className="customer-dashboard-content">
         <h1>Welcome, {username}!</h1>
         <p>Explore our food menu and enjoy!</p>
       </main>

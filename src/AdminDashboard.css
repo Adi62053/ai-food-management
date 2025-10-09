@@ -1,33 +1,46 @@
 .admin-dashboard {
-    min-height: 100vh;
-    background: url("/background1.jpg") no-repeat center center fixed;
-    background-size: cover;
-    
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .logout-btn {
-    padding: 8px 15px;
+  min-height: 100vh;
+  background: url("/background1.jpg") no-repeat center center fixed;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-navbar {
+  position: relative;
+  width: 100%;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  box-sizing: border-box;
+}
+
+.admin-logo {
+  height: 50px;
+}
+
+.admin-logout-btn {
+  padding: 8px 15px;
   background-color: #ff9800;
   border: none;
   border-radius: 5px;
   color: white;
   font-weight: bold;
   cursor: pointer;
+}
+
+.admin-logout-btn:hover {
+  background-color: #e68a00;
+}
+
+.admin-dashboard-content {
+  flex: 1;
   position: absolute;
-  top: 20px;    /* distance from top */
-  right: 20px;  /* distance from right */
-  }
-  .logout-btn:hover {
-    background-color: #e68a00;
-  }
-  .dashboard-content {
-    flex: 1;
-    position: absolute;
-    top: 100px;  /* distance from top of the screen */
-    left: 435px; /* distance from left of the screen */
-    font-size: 12px;
-    color: #1E3A8A;
-    text-align: center;
-  }
+  top: 100px;
+  left: 435px;
+  font-size: 12px;
+  color: #1E3A8A;
+  text-align: center;
+}
