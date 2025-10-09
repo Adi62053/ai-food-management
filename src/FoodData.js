@@ -2,7 +2,7 @@
 const foodItems = [
     {
       id: 1,
-      name: "Rice",
+      name: "Fried-Rice",
       type: "Veg",
       price: 120,
       image: "/ai-food-management/fimage/rice.jpg",
