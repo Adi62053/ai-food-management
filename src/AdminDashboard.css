@@ -1,8 +1,8 @@
-.Admindashboard {
+.admin-dashboard {
     min-height: 100vh;
-    background: none;
-    background-color: white;
+    background: url("/background1.jpg") no-repeat center center fixed;
     background-size: cover;
+    
     display: flex;
     flex-direction: column;
   }

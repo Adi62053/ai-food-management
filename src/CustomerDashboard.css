@@ -1,51 +1,95 @@
+/* CustomerDashboard.css */
 .customerdashboard {
-    min-height: 100vh;
-    background: none;
-    background-color: white;
-    background-size: cover;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .dashboard-content {
-    flex: 1;
-    position: absolute;
-    top: 100px;  /* distance from top of the screen */
-    left: 435px; /* distance from left of the screen */
-    font-size: 12px;
-    color: #1E3A8A;
-    text-align: center;
-  }
-  .navbar {
-    position: absolute; /* Make navbar float over background */
-    top: 10px;
-    left: 0;
-    width: 100%;
-    height: 50px;
-    display: grid;
-    grid-template-columns: 1fr auto 1fr; /* Logo - Links - Buttons */
-    align-items: center;
-    padding:0px 30px;
-    Background: transparent /* Fully transparent */
-    
-  }
-  
-  .logo {
-    height: 50px;
-    justify-self: start; /* Keep logo on left */
-  }
-  .logout-btn {
-    padding: 8px 15px;
+  min-height: 100vh;
+  background-color: white;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-content {
+  flex: 1;
+  position: absolute;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 20px;
+  color: #1E3A8A;
+  text-align: center;
+}
+
+.navbar {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  align-items: center;
+  padding: 0 30px;
+  background: transparent;
+}
+
+.logo {
+  height: 50px;
+  justify-self: start;
+}
+
+.logout-btn {
+  padding: 8px 15px;
   background-color: #ff9800;
   border: none;
   border-radius: 5px;
   color: white;
   font-weight: bold;
   cursor: pointer;
+  justify-self: end;
+}
+
+.logout-btn:hover {
+  background-color: #e68a00;
+}
+
+.search-store-container {
+  position: relative;
+  display: flex;
+  gap: 10px;
+  justify-self: center;
+}
+
+.store-select {
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.search-input {
+  padding: 5px 10px;
+  border-radius: 5px;
+  width: 200px;
+}
+
+.search-dropdown {
   position: absolute;
-  top: 20px;    /* distance from top */
-  right: 20px;  /* distance from right */
-  }
-  .logout-btn:hover {
-    background-color: #e68a00;
-  }
+  top: 35px;
+  left: 0;
+  width: 100%;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  z-index: 10;
+}
+
+.search-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.search-item img {
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+}

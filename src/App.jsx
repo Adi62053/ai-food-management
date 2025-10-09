@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
+import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./App.css";
 
@@ -91,9 +91,21 @@ function Layout({ children, showLogin = false }) {
       .post(loginUrl, loginData)
       .then((res) => {
         const data = res.data;
-        if (data === "Admin login successful!" || data === "Login successful!") {
+        
+        // For CUSTOMER login - check for JSON object with username and customerId
+        if (!isAdminLogin && data.username && data.customerId) {
+          localStorage.setItem("username", data.username);
+          localStorage.setItem("customerId", data.customerId);
+          localStorage.setItem("email", data.email);
+         
+          navigate("/customer");
+          setUsername("");
+          setPassword("");
+        } 
+        // For ADMIN login - keep the original check
+        else if (isAdminLogin && data === "Admin login successful!") {
           localStorage.setItem("username", username);
-          navigate(isAdminLogin ? "/admin" : "/customer");
+          navigate("/admin");
           setUsername("");
           setPassword("");
           setSecurityCode("");
@@ -231,8 +243,7 @@ function Layout({ children, showLogin = false }) {
     <div className="dashboard">
       {/* Top Navigation Bar */}
       <div className="navbar">
-      <img src="/ai-food-management/logo1.png" className="logo" alt="Logo" />
-
+        <img src="/ai-food-management/logo1.png" className="logo" alt="Logo" />
 
         <div className="nav-links">
           <Link to="/">Home</Link>
@@ -443,6 +454,5 @@ function App() {
     </Routes>
   );
 }
-
 
 export default App;

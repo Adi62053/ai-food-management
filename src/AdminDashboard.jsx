@@ -11,7 +11,7 @@ function AdminDashboard() {
   return (
     <div className="admin-dashboard">
       <div className="navbar">
-        <img src="/logo1.png" className="logo" alt="Logo" />
+      <img src="/ai-food-management/logo1.png" className="logo" alt="Logo" />
         <button className="logout-btn" onClick={handleLogoutClick}>
       Log-out
     </button>
