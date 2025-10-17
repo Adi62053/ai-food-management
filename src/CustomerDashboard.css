@@ -1,5 +1,13 @@
-/* CustomerDashboard.css - Updated with new components */
+/* CustomerDashboard.css - Updated with Home section */
+/* Add this to your CustomerDashboard.css */
 
+/* ===== HOME SECTION STYLES ===== */
+.home-section {
+  min-height: 60vh;
+  /* Empty for now - you can add content here later */
+}
+
+/* Remove any previous home section styles that had content */
 /* ===== MAIN DASHBOARD CONTAINER ===== */
 .customer-dashboard {
   min-height: 100vh;
@@ -30,14 +38,52 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 30px;
-  background: yellow;
+  background: white;
   box-sizing: border-box;
   z-index: 1000;
+  gap: 20px;
 }
 
 .customer-logo {
   height: 50px;
   flex-shrink: 0;
+}
+
+/* ===== NAVIGATION MENU ===== */
+.customer-nav-menu {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin: 0 20px;
+}
+
+.nav-menu-btn {
+  background: transparent;
+  border: 2px solid #ff6b6b;
+  color: #ff6b6b;
+  padding: 8px 16px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.nav-menu-btn:hover {
+  background: #ff6b6b;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+}
+
+.nav-menu-btn.active {
+  background: #ff6b6b;
+  color: white;
+  border-color: #ff6b6b;
 }
 
 /* ===== USER SECTION ===== */
@@ -138,35 +184,111 @@
   font-weight: bold;
 }
 
-/* ===== TABS SECTION ===== */
-.customer-tabs {
-  display: flex;
-  justify-content: center;
-  margin: 20px 0;
-  gap: 10px;
-  position: relative;
-  z-index: 2;
+/* ===== HOME SECTION STYLES ===== */
+.home-section {
+  padding: 40px 20px;
+  text-align: center;
 }
 
-.tab-button {
-  padding: 12px 24px;
-  border: none;
-  border-radius: 8px;
-  background-color: #f0f0f0;
+.welcome-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.welcome-title {
+  font-size: 3rem;
   color: #333;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, #ff6b6b, #ff8e53);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.welcome-subtitle {
+  font-size: 1.3rem;
+  color: #666;
+  margin-bottom: 3rem;
+}
+
+.feature-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin: 3rem 0;
+}
+
+.feature-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid #e0e0e0;
+}
+
+.feature-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+
+.feature-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.feature-card h3 {
+  color: #333;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.feature-card p {
+  color: #666;
+  line-height: 1.6;
+}
+
+.quick-actions {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  margin-top: 3rem;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.1rem;
   font-weight: bold;
   cursor: pointer;
   transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.tab-button.active {
-  background-color: #ff9800;
+.action-btn.primary {
+  background: linear-gradient(135deg, #ff6b6b, #ff8e53);
   color: white;
 }
 
-.tab-button:hover {
-  background-color: #e68a00;
+.action-btn.primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
+}
+
+.action-btn.secondary {
+  background: transparent;
+  color: #ff6b6b;
+  border: 2px solid #ff6b6b;
+}
+
+.action-btn.secondary:hover {
+  background: #ff6b6b;
   color: white;
+  transform: translateY(-3px);
 }
 
 /* ===== WASTAGE BANNER ===== */
@@ -181,7 +303,7 @@
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-/* ===== STORE HEADER (NEW) ===== */
+/* ===== STORE HEADER ===== */
 .store-header {
   margin-bottom: 30px;
   padding: 20px;
@@ -208,7 +330,7 @@
   margin: 5px 0 0 0;
 }
 
-/* ===== STORE SELECTION PROMPT (UPDATED) ===== */
+/* ===== STORE SELECTION PROMPT ===== */
 .select-store-prompt {
   text-align: center;
   padding: 50px 20px;
@@ -239,10 +361,24 @@
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   transition: transform 0.3s ease;
   border-left: 4px solid #ff9800;
+  cursor: pointer;
 }
 
 .store-option:hover {
   transform: translateY(-5px);
+}
+
+.store-gif-container {
+  height: 120px;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.store-gif {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .store-option h3 {
@@ -254,6 +390,23 @@
 .store-option p {
   color: #666;
   margin: 0;
+}
+
+.store-select-btn {
+  background: #ff6b6b;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  margin-top: 1rem;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.store-select-btn:hover {
+  background: #ff5252;
+  transform: translateY(-2px);
 }
 
 /* ===== DISHES GRID ===== */
@@ -289,7 +442,7 @@
   margin-bottom: 12px;
 }
 
-/* ===== DISH CATEGORY BADGE (NEW) ===== */
+/* ===== DISH CATEGORY BADGE ===== */
 .dish-category {
   display: inline-block;
   background: #e3f2fd;
@@ -312,7 +465,7 @@
   justify-content: center;
 }
 
-/* ===== DISH DESCRIPTION (NEW) ===== */
+/* ===== DISH DESCRIPTION ===== */
 .dish-description {
   color: #666;
   font-size: 14px;
@@ -393,7 +546,7 @@
   margin: 15px 0;
 }
 
-/* ===== MODAL CATEGORY BADGE (NEW) ===== */
+/* ===== MODAL CATEGORY BADGE ===== */
 .dish-category-modal {
   display: inline-block;
   background: #e8f5e8;
@@ -587,6 +740,7 @@
     height: auto;
     padding: 10px;
     position: relative;
+    gap: 10px;
   }
   
   .customer-dashboard-content {
@@ -598,10 +752,21 @@
     max-width: 100%;
     flex-direction: column;
     gap: 10px;
+    order: 3;
   }
   
   .customer-search-input {
     width: 100%;
+  }
+  
+  .customer-nav-menu {
+    order: 2;
+    margin: 10px 0;
+  }
+  
+  .customer-user-section {
+    order: 1;
+    margin-bottom: 10px;
   }
   
   .dishes-grid {
@@ -610,11 +775,6 @@
   
   .stats-cards {
     grid-template-columns: 1fr;
-  }
-  
-  .customer-tabs {
-    flex-direction: column;
-    align-items: center;
   }
   
   .store-options {
@@ -627,6 +787,44 @@
   
   .store-header h2 {
     font-size: 24px;
+  }
+  
+  .nav-menu-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  /* Home section responsive */
+  .welcome-title {
+    font-size: 2rem;
+  }
+  
+  .welcome-subtitle {
+    font-size: 1.1rem;
+  }
+  
+  .feature-cards {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .quick-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .action-btn {
+    width: 100%;
+    max-width: 250px;
+    justify-content: center;
+  }
+  
+  .feature-card {
+    padding: 1.5rem;
+  }
+  
+  .feature-icon {
+    font-size: 3rem;
   }
 }
 
@@ -715,4 +913,474 @@
   position: sticky;
   top: 0;
   z-index: 1;
+}
+
+/* CustomerDashboard.css - Order History & Stats Styles */
+
+/* Stats Section */
+.stats-section {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.stats-section h2 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 30px;
+  font-size: 2.2rem;
+  font-weight: 700;
+}
+
+/* Stats Cards with Bright Background Colors */
+.stats-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+/* Total Waste Reduced Card - Bright Green */
+.stat-card:nth-child(1) {
+  background: linear-gradient(135deg, #00C853 0%, #00E676 100%);
+  color: white;
+  padding: 30px 25px;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid #00C853;
+}
+
+.stat-card:nth-child(1)::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #69F0AE, #00E676, #00C853);
+}
+
+/* Orders Placed Card - Bright Blue */
+.stat-card:nth-child(2) {
+  background: linear-gradient(135deg, #2979FF 0%, #2962FF 100%);
+  color: white;
+  padding: 30px 25px;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid #2979FF;
+}
+
+.stat-card:nth-child(2)::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #82B1FF, #448AFF, #2962FF);
+}
+
+/* Money Saved Card - Bright Orange */
+.stat-card:nth-child(3) {
+  background: linear-gradient(135deg, #FF6D00 0%, #FF9100 100%);
+  color: white;
+  padding: 30px 25px;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid #FF6D00;
+}
+
+.stat-card:nth-child(3)::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #FFAB40, #FF9100, #FF6D00);
+}
+
+/* Common hover effect for all cards */
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+}
+
+.stat-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  font-weight: 700;
+  color: black;
+  opacity: 1;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.stat-number {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  letter-spacing: 1px;
+}
+
+.stat-card p:last-child {
+  font-size: 1rem;
+  opacity: 0.95;
+  color: white;
+  line-height: 1.5;
+  font-weight: 500;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+/* Order History Section */
+.order-history-section {
+  background: #f8f9fa;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.order-history-section h3 {
+  color: #2c3e50;
+  margin-bottom: 25px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.order-history-section h3::before {
+  content: '📋';
+  font-size: 1.3rem;
+}
+
+/* No Orders State */
+.no-orders {
+  text-align: center;
+  padding: 60px 20px;
+  color: #6c757d;
+}
+
+.no-orders p {
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+/* Orders Grid */
+.orders-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 20px;
+}
+
+/* Order Card */
+.order-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e9ecef;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.order-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+.order-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  background: linear-gradient(180deg, #667eea, #764ba2);
+}
+
+/* Order Header */
+.order-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.order-dish-image {
+  width: 70px;
+  height: 70px;
+  border-radius: 10px;
+  object-fit: cover;
+  border: 2px solid #e9ecef;
+}
+
+.order-basic-info {
+  flex: 1;
+}
+
+.order-basic-info h4 {
+  margin: 0 0 8px 0;
+  color: #2c3e50;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.order-store {
+  color: #6c757d;
+  font-size: 0.9rem;
+  margin: 0 0 5px 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.order-date {
+  color: #868e96;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.order-status {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.order-status.completed {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.order-status.pending {
+  background: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeaa7;
+}
+
+.order-status.processing {
+  background: #cce7ff;
+  color: #004085;
+  border: 1px solid #b3d7ff;
+}
+
+/* Order Details */
+.order-details {
+  border-top: 1px solid #e9ecef;
+  padding-top: 15px;
+}
+
+.order-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #f8f9fa;
+}
+
+.order-detail-row:last-child {
+  border-bottom: none;
+}
+
+.order-detail-row span:first-child {
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.order-detail-row span:last-child {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+/* Special Row Styles */
+.order-detail-row.discount {
+  color: #28a745;
+}
+
+.order-detail-row.discount span:last-child {
+  color: #28a745;
+}
+
+.order-detail-row.final-price {
+  background: #f8f9fa;
+  margin: 0 -20px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: 700;
+}
+
+.order-detail-row.final-price span:last-child {
+  color: #e74c3c;
+  font-size: 1.1rem;
+}
+
+.order-detail-row.impact {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  margin: 10px -20px -20px -20px;
+  padding: 15px 20px;
+  color: white;
+  border-radius: 0 0 12px 12px;
+}
+
+.order-detail-row.impact span:first-child {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.order-detail-row.impact span:last-child {
+  color: white;
+  font-size: 1.1rem;
+}
+
+.waste-reduced {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 4px 12px;
+  border-radius: 15px;
+  font-weight: 700;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .stats-section {
+    padding: 15px;
+  }
+  
+  .stats-cards {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .stat-card {
+    padding: 25px 20px;
+  }
+  
+  .stat-number {
+    font-size: 2.2rem;
+  }
+  
+  .order-history-section {
+    padding: 20px;
+  }
+  
+  .orders-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .order-card {
+    padding: 15px;
+  }
+  
+  .order-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .order-status {
+    align-self: flex-start;
+    margin-top: 10px;
+  }
+  
+  .order-detail-row.final-price,
+  .order-detail-row.impact {
+    margin-left: -15px;
+    margin-right: -15px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-section h2 {
+    font-size: 1.8rem;
+  }
+  
+  .stat-number {
+    font-size: 2rem;
+  }
+  
+  .order-history-section h3 {
+    font-size: 1.3rem;
+  }
+  
+  .order-basic-info h4 {
+    font-size: 1.1rem;
+  }
+}
+
+/* Animation for new orders */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.order-card {
+  animation: slideInUp 0.5s ease;
+}
+
+/* Empty state animation */
+.no-orders {
+  animation: fadeIn 1s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Loading state for orders */
+.orders-grid.loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Scrollbar styling for order history */
+.order-history-section {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.order-history-section::-webkit-scrollbar {
+  width: 6px;
+}
+
+.order-history-section::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.order-history-section::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.order-history-section::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
 }

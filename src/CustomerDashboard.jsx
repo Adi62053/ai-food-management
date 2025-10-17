@@ -18,7 +18,8 @@ function CustomerDashboard() {
   const [orderQuantity, setOrderQuantity] = useState(1);
   const [customerStats, setCustomerStats] = useState({ wasteReduced: 0, totalOrders: 0, moneySaved: 0 });
   const [feedback, setFeedback] = useState({ rating: 5, comment: "" });
-  const [activeTab, setActiveTab] = useState("menu");
+  const [activeTab, setActiveTab] = useState("home"); // Default to home tab
+  const [orderHistory, setOrderHistory] = useState([]); // NEW: Track all orders
   const navigate = useNavigate();
 
   const stores = ["Select a store", "Guntur", "Vijayawada", "Hyderabad"];
@@ -51,6 +52,7 @@ function CustomerDashboard() {
       setUsername(user);
       setCustomerId(id);
       loadCustomerStats(id);
+      loadOrderHistory(id); // NEW: Load order history
     } else {
       navigate("/");
     }
@@ -122,20 +124,49 @@ function CustomerDashboard() {
     }
   };
 
-  // 6️⃣ Place order (mock function)
+  // 6️⃣ Place order (UPDATED: Now saves order details)
   const submitOrder = async (dishId, quantity) => {
     try {
       const dish = availableDishes.find(d => d.id === dishId);
       const discount = 0.15;
-      const finalPrice = dish.price * quantity * (1 - discount);
+      const originalPrice = dish.price * quantity;
+      const discountAmount = originalPrice * discount;
+      const finalPrice = originalPrice - discountAmount;
+      const wasteReduced = 0.3 * quantity;
       
-      alert(`✅ Order placed successfully!\n${quantity}x ${dish.name}\nOriginal: ₹${dish.price * quantity}\nAfter AI Discount: ₹${finalPrice.toFixed(2)}\nYou saved: ₹${(dish.price * quantity * discount).toFixed(2)}`);
+      // Create order object with full details
+      const newOrder = {
+        id: Date.now(), // Unique order ID
+        dishId: dish.id,
+        dishName: dish.name,
+        dishImage: dish.image,
+        store: selectedStore,
+        category: dish.category,
+        quantity: quantity,
+        originalPrice: originalPrice,
+        discount: discount,
+        discountAmount: discountAmount,
+        finalPrice: finalPrice,
+        wasteReduced: wasteReduced,
+        date: new Date().toLocaleString(),
+        status: "Completed"
+      };
       
+      // Save order to history
+      const updatedOrderHistory = [newOrder, ...orderHistory];
+      setOrderHistory(updatedOrderHistory);
+      
+      // Save to localStorage
+      localStorage.setItem(`orderHistory_${customerId}`, JSON.stringify(updatedOrderHistory));
+      
+      alert(`✅ Order placed successfully!\n${quantity}x ${dish.name}\nOriginal: ₹${originalPrice}\nAfter AI Discount: ₹${finalPrice.toFixed(2)}\nYou saved: ₹${discountAmount.toFixed(2)}`);
+      
+      // Update customer stats
       setCustomerStats(prev => ({
         ...prev,
         totalOrders: prev.totalOrders + 1,
-        wasteReduced: prev.wasteReduced + (0.3 * quantity),
-        moneySaved: prev.moneySaved + (dish.price * quantity * discount)
+        wasteReduced: prev.wasteReduced + wasteReduced,
+        moneySaved: prev.moneySaved + discountAmount
       }));
       
       setSelectedDish(null);
@@ -155,9 +186,21 @@ function CustomerDashboard() {
   const loadCustomerStats = async (customerId) => {
     setCustomerStats({
       wasteReduced: 2.5,
-      totalOrders: 8,
+      totalOrders: 2,
       moneySaved: 240
     });
+  };
+
+  // NEW: Load order history from localStorage
+  const loadOrderHistory = async (customerId) => {
+    try {
+      const savedOrders = localStorage.getItem(`orderHistory_${customerId}`);
+      if (savedOrders) {
+        setOrderHistory(JSON.parse(savedOrders));
+      }
+    } catch (error) {
+      console.log("No previous orders found");
+    }
   };
 
   const handleLogoutClick = () => {
@@ -203,7 +246,7 @@ function CustomerDashboard() {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
 
-          {/* Search suggestions dropdown - WORKS ACROSS ALL STORES */}
+          {/* Search suggestions dropdown */}
           {searchTerm && filteredFood.length > 0 && (
             <div className="customer-search-dropdown">
               <div className="store-selection-header">
@@ -226,7 +269,6 @@ function CustomerDashboard() {
             </div>
           )}
 
-          {/* Show message when no results found */}
           {searchTerm && filteredFood.length === 0 && (
             <div className="customer-search-dropdown">
               <div className="no-results">
@@ -236,7 +278,29 @@ function CustomerDashboard() {
           )}
         </div>
 
-        {/* Username and Logout - Side by Side */}
+        {/* Navigation Menu */}
+        <div className="customer-nav-menu">
+          <button 
+            className={`nav-menu-btn ${activeTab === "home" ? "active" : ""}`}
+            onClick={() => setActiveTab("home")}
+          >
+            🏠 Home
+          </button>
+          <button 
+            className={`nav-menu-btn ${activeTab === "menu" ? "active" : ""}`}
+            onClick={() => setActiveTab("menu")}
+          >
+            🍽️ Menu
+          </button>
+          <button 
+            className={`nav-menu-btn ${activeTab === "stats" ? "active" : ""}`}
+            onClick={() => setActiveTab("stats")}
+          >
+            📊 My Impact
+          </button>
+        </div>
+
+        {/* Username and Logout */}
         <div className="customer-user-section">
           <span className="customer-username">👤 {username}</span>
           <button className="customer-logout-btn" onClick={handleLogoutClick}>
@@ -248,158 +312,160 @@ function CustomerDashboard() {
       {/* Main Content */}
       <main className="customer-dashboard-content">
         
-        {/* Dashboard Tabs */}
-        <div className="customer-tabs">
-          <button 
-            className={`tab-button ${activeTab === "menu" ? "active" : ""}`}
-            onClick={() => setActiveTab("menu")}
-          >
-            🍽️ Menu
-          </button>
-          <button 
-            className={`tab-button ${activeTab === "stats" ? "active" : ""}`}
-            onClick={() => setActiveTab("stats")}
-          >
-            📊 My Impact
-          </button>
-        </div>
-
-        {/* Wastage Reduction Stats Banner */}
-        <div className="wastage-banner">
-          🎉 You helped reduce <strong>{customerStats.wasteReduced} kg</strong> of food waste!
-        </div>
-
-        {activeTab === "menu" && selectedStore !== "Select a store" && (
-          <div className="menu-section">
-            {/* Store Header with Description */}
-            <div className="store-header">
-              <h2>🏪 {selectedStore} Store Menu</h2>
-              <p className="store-description">{getStoreDescription(selectedStore)}</p>
-              <p className="store-dish-count">{availableDishes.length} delicious dishes available</p>
-            </div>
+        {/* Home Tab Content - Different from other tabs */}
+        {activeTab === "home" && (
+          <div className="home-section">
+            {/* Add your custom home content here later */}
             
-            {/* Dishes Grid */}
-            <div className="dishes-grid">
-              {availableDishes.map(dish => (
-                <div key={dish.id} className="dish-card" onClick={() => {
-                  setSelectedDish(dish);
-                  getPortionRecommendation(dish.id);
-                  checkDishStock(dish.id);
-                }}>
-                  <img src={dish.image} alt={dish.name} className="dish-image" />
-                  <div className="dish-category">{dish.category}</div>
-                  <h3>{dish.name}</h3>
-                  <p className="dish-description">{dish.description}</p>
-                  <p className="dish-price">₹{dish.price}</p>
-                  <button className="view-details-btn">View Details & Order</button>
-                </div>
-              ))}
+          </div>
+        )}
+
+        {/* Menu Tab Content */}
+        {activeTab === "menu" && (
+          <>
+            {/* Wastage Reduction Stats Banner */}
+            <div className="wastage-banner">
+              🎉 You helped reduce <strong>{customerStats.wasteReduced.toFixed(2)} kg</strong> of food waste!
             </div>
 
-            {/* Dish Details Modal */}
-            {selectedDish && (
-              <div className="dish-modal-overlay">
-                <div className="dish-modal">
-                  <button className="close-modal" onClick={() => setSelectedDish(null)}>×</button>
-                  
-                  <h2>{selectedDish.name}</h2>
-                  <div className="dish-category-modal">{selectedDish.category}</div>
-                  <img src={selectedDish.image} alt={selectedDish.name} className="modal-dish-image" />
-                  <p className="dish-description-modal">{selectedDish.description}</p>
-                  
-                  {/* AI Recommendation */}
-                  {portionRecommendation && (
-                    <div className="recommendation-section">
-                      <h3>🤖 AI Smart Recommendation</h3>
-                      <p>{portionRecommendation}</p>
-                    </div>
-                  )}
-
-                  {/* Stock Status */}
-                  {stockStatus && (
-                    <div className={`stock-section ${stockStatus.includes('Low Stock') ? 'low-stock' : 'in-stock'}`}>
-                      {stockStatus}
-                    </div>
-                  )}
-
-                  {/* Order Section */}
-                  <div className="order-section">
-                    <label>Quantity:</label>
-                    <input
-                      type="number"
-                      min="1"
-                      max="10"
-                      value={orderQuantity}
-                      onChange={(e) => setOrderQuantity(parseInt(e.target.value))}
-                      className="quantity-input"
-                    />
-                    <button 
-                      onClick={() => submitOrder(selectedDish.id, orderQuantity)}
-                      className="order-btn"
-                    >
-                      Place Order - ₹{(selectedDish.price * orderQuantity * 0.85).toFixed(2)}
-                    </button>
+            {/* Show store selection prompt when no store is selected */}
+            {selectedStore === "Select a store" && (
+              <div className="select-store-prompt">
+                <h2>🏪 Please Select Your Store</h2>
+                <p>Choose from our locations to explore unique regional cuisines:</p>
+                <div className="store-options">
+                  <div className="store-option" onClick={() => setSelectedStore("Guntur")}>
+                    <h3>🔥 Guntur</h3>
+                    <p>Authentic Andhra spicy cuisine</p>
                   </div>
-
-                  {/* Feedback Section */}
-                  <div className="feedback-section">
-                    <h4>Help us reduce waste:</h4>
-                    <select 
-                      value={feedback.rating}
-                      onChange={(e) => setFeedback({...feedback, rating: parseInt(e.target.value)})}
-                      className="feedback-select"
-                    >
-                      <option value="5">Perfect Portion 👍</option>
-                      <option value="3">Too Much 😕</option>
-                      <option value="1">Way Too Much 🗑️</option>
-                    </select>
-                    <textarea
-                      placeholder="Any comments on portion size?"
-                      value={feedback.comment}
-                      onChange={(e) => setFeedback({...feedback, comment: e.target.value})}
-                      className="feedback-textarea"
-                    />
-                    <button 
-                      onClick={() => submitFeedback(selectedDish.id, feedback.rating, feedback.comment)}
-                      className="feedback-btn"
-                    >
-                      Submit Feedback
-                    </button>
+                  <div className="store-option" onClick={() => setSelectedStore("Vijayawada")}>
+                    <h3>🌊 Vijayawada</h3>
+                    <p>Coastal seafood & vegetarian specialties</p>
+                  </div>
+                  <div className="store-option" onClick={() => setSelectedStore("Hyderabad")}>
+                    <h3>👑 Hyderabad</h3>
+                    <p>Royal biryanis & Mughlai dishes</p>
                   </div>
                 </div>
               </div>
             )}
-          </div>
+
+            {/* Show menu when store is selected */}
+            {selectedStore !== "Select a store" && (
+              <div className="menu-section">
+                {/* Store Header with Description */}
+                <div className="store-header">
+                  <h2>🏪 {selectedStore} Store Menu</h2>
+                  <p className="store-description">{getStoreDescription(selectedStore)}</p>
+                  <p className="store-dish-count">{availableDishes.length} delicious dishes available</p>
+                </div>
+                
+                {/* Dishes Grid */}
+                <div className="dishes-grid">
+                  {availableDishes.map(dish => (
+                    <div key={dish.id} className="dish-card" onClick={() => {
+                      setSelectedDish(dish);
+                      getPortionRecommendation(dish.id);
+                      checkDishStock(dish.id);
+                    }}>
+                      <img src={dish.image} alt={dish.name} className="dish-image" />
+                      <div className="dish-category">{dish.category}</div>
+                      <h3>{dish.name}</h3>
+                      <p className="dish-description">{dish.description}</p>
+                      <p className="dish-price">₹{dish.price}</p>
+                      <button className="view-details-btn">View Details & Order</button>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Dish Details Modal */}
+                {selectedDish && (
+                  <div className="dish-modal-overlay">
+                    <div className="dish-modal">
+                      <button className="close-modal" onClick={() => setSelectedDish(null)}>×</button>
+                      
+                      <h2>{selectedDish.name}</h2>
+                      <div className="dish-category-modal">{selectedDish.category}</div>
+                      <img src={selectedDish.image} alt={selectedDish.name} className="modal-dish-image" />
+                      <p className="dish-description-modal">{selectedDish.description}</p>
+                      
+                      {/* AI Recommendation */}
+                      {portionRecommendation && (
+                        <div className="recommendation-section">
+                          <h3>🤖 AI Smart Recommendation</h3>
+                          <p>{portionRecommendation}</p>
+                        </div>
+                      )}
+
+                      {/* Stock Status */}
+                      {stockStatus && (
+                        <div className={`stock-section ${stockStatus.includes('Low Stock') ? 'low-stock' : 'in-stock'}`}>
+                          {stockStatus}
+                        </div>
+                      )}
+
+                      {/* Order Section */}
+                      <div className="order-section">
+                        <label>Quantity:</label>
+                        <input
+                          type="number"
+                          min="1"
+                          max="10"
+                          value={orderQuantity}
+                          onChange={(e) => setOrderQuantity(parseInt(e.target.value))}
+                          className="quantity-input"
+                        />
+                        <button 
+                          onClick={() => submitOrder(selectedDish.id, orderQuantity)}
+                          className="order-btn"
+                        >
+                          Place Order - ₹{(selectedDish.price * orderQuantity * 0.85).toFixed(2)}
+                        </button>
+                      </div>
+
+                      {/* Feedback Section */}
+                      <div className="feedback-section">
+                        <h4>Help us reduce waste:</h4>
+                        <select 
+                          value={feedback.rating}
+                          onChange={(e) => setFeedback({...feedback, rating: parseInt(e.target.value)})}
+                          className="feedback-select"
+                        >
+                          <option value="5">Perfect Portion 👍</option>
+                          <option value="3">Too Much 😕</option>
+                          <option value="1">Way Too Much 🗑️</option>
+                        </select>
+                        <textarea
+                          placeholder="Any comments on portion size?"
+                          value={feedback.comment}
+                          onChange={(e) => setFeedback({...feedback, comment: e.target.value})}
+                          className="feedback-textarea"
+                        />
+                        <button 
+                          onClick={() => submitFeedback(selectedDish.id, feedback.rating, feedback.comment)}
+                          className="feedback-btn"
+                        >
+                          Submit Feedback
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </>
         )}
 
-        {activeTab === "menu" && selectedStore === "Select a store" && (
-          <div className="select-store-prompt">
-            <h2>🏪 Please Select Your Store</h2>
-            <p>Choose from our locations to explore unique regional cuisines:</p>
-            <div className="store-options">
-              <div className="store-option">
-                <h3>🔥 Guntur</h3>
-                <p>Authentic Andhra spicy cuisine</p>
-              </div>
-              <div className="store-option">
-                <h3>🌊 Vijayawada</h3>
-                <p>Coastal seafood & vegetarian specialties</p>
-              </div>
-              <div className="store-option">
-                <h3>👑 Hyderabad</h3>
-                <p>Royal biryanis & Mughlai dishes</p>
-              </div>
-            </div>
-          </div>
-        )}
-
+        {/* Stats Tab Content - UPDATED with Order History */}
         {activeTab === "stats" && (
           <div className="stats-section">
             <h2>Your Food Waste Reduction Impact</h2>
+            
+            {/* Summary Stats Cards */}
             <div className="stats-cards">
               <div className="stat-card">
                 <h3>Total Waste Reduced</h3>
-                <p className="stat-number">{customerStats.wasteReduced} kg</p>
+                <p className="stat-number">{customerStats.wasteReduced.toFixed(2)} kg</p>
                 <p>Equivalent to saving {Math.round(customerStats.wasteReduced * 1000)} meals!</p>
               </div>
               <div className="stat-card">
@@ -409,8 +475,138 @@ function CustomerDashboard() {
               </div>
               <div className="stat-card">
                 <h3>Money Saved</h3>
-                <p className="stat-number">₹{customerStats.moneySaved}</p>
+                <p className="stat-number">₹{customerStats.moneySaved.toFixed(2)}</p>
                 <p>Through portion optimization</p>
+              </div>
+            </div>
+
+            {/* Order History Section */}
+            <div className="order-history-section">
+              <h3>📋 Your Order History</h3>
+              
+              {orderHistory.length === 0 ? (
+                <div className="no-orders">
+                  <p>No orders placed yet. Start ordering to see your impact!</p>
+                </div>
+              ) : (
+                <div className="orders-grid">
+                  {orderHistory.map(order => (
+                    <div key={order.id} className="order-card">
+                      <div className="order-header">
+                        <img src={order.dishImage} alt={order.dishName} className="order-dish-image" />
+                        <div className="order-basic-info">
+                          <h4>{order.dishName}</h4>
+                          <p className="order-store">🏪 {order.store} Store</p>
+                          <p className="order-date">{order.date}</p>
+                        </div>
+                        <span className={`order-status ${order.status.toLowerCase()}`}>
+                          {order.status}
+                        </span>
+                      </div>
+                      
+                      <div className="order-details">
+                        <div className="order-detail-row">
+                          <span>Quantity:</span>
+                          <span>{order.quantity} portion(s)</span>
+                        </div>
+                        <div className="order-detail-row">
+                          <span>Category:</span>
+                          <span>{order.category}</span>
+                        </div>
+                        <div className="order-detail-row">
+                          <span>Original Price:</span>
+                          <span>₹{order.originalPrice.toFixed(2)}</span>
+                        </div>
+                        <div className="order-detail-row discount">
+                          <span>AI Discount ({order.discount * 100}%):</span>
+                          <span>-₹{order.discountAmount.toFixed(2)}</span>
+                        </div>
+                        <div className="order-detail-row final-price">
+                          <span>Final Price:</span>
+                          <span>₹{order.finalPrice.toFixed(2)}</span>
+                        </div>
+                        <div className="order-detail-row impact">
+                          <span>Waste Reduced:</span>
+                          <span className="waste-reduced">{order.wasteReduced.toFixed(2)} kg</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Dish Details Modal for Home Tab */}
+        {activeTab === "home" && selectedDish && (
+          <div className="dish-modal-overlay">
+            <div className="dish-modal">
+              <button className="close-modal" onClick={() => setSelectedDish(null)}>×</button>
+              
+              <h2>{selectedDish.name}</h2>
+              <div className="dish-category-modal">{selectedDish.category}</div>
+              <img src={selectedDish.image} alt={selectedDish.name} className="modal-dish-image" />
+              <p className="dish-description-modal">{selectedDish.description}</p>
+              
+              {/* AI Recommendation */}
+              {portionRecommendation && (
+                <div className="recommendation-section">
+                  <h3>🤖 AI Smart Recommendation</h3>
+                  <p>{portionRecommendation}</p>
+                </div>
+              )}
+
+              {/* Stock Status */}
+              {stockStatus && (
+                <div className={`stock-section ${stockStatus.includes('Low Stock') ? 'low-stock' : 'in-stock'}`}>
+                  {stockStatus}
+                </div>
+              )}
+
+              {/* Order Section */}
+              <div className="order-section">
+                <label>Quantity:</label>
+                <input
+                  type="number"
+                  min="1"
+                  max="10"
+                  value={orderQuantity}
+                  onChange={(e) => setOrderQuantity(parseInt(e.target.value))}
+                  className="quantity-input"
+                />
+                <button 
+                  onClick={() => submitOrder(selectedDish.id, orderQuantity)}
+                  className="order-btn"
+                >
+                  Place Order - ₹{(selectedDish.price * orderQuantity * 0.85).toFixed(2)}
+                </button>
+              </div>
+
+              {/* Feedback Section */}
+              <div className="feedback-section">
+                <h4>Help us reduce waste:</h4>
+                <select 
+                  value={feedback.rating}
+                  onChange={(e) => setFeedback({...feedback, rating: parseInt(e.target.value)})}
+                  className="feedback-select"
+                >
+                  <option value="5">Perfect Portion 👍</option>
+                  <option value="3">Too Much 😕</option>
+                  <option value="1">Way Too Much 🗑️</option>
+                </select>
+                <textarea
+                  placeholder="Any comments on portion size?"
+                  value={feedback.comment}
+                  onChange={(e) => setFeedback({...feedback, comment: e.target.value})}
+                  className="feedback-textarea"
+                />
+                <button 
+                  onClick={() => submitFeedback(selectedDish.id, feedback.rating, feedback.comment)}
+                  className="feedback-btn"
+                >
+                  Submit Feedback
+                </button>
               </div>
             </div>
           </div>
