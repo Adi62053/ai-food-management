@@ -44,6 +44,7 @@ function CustomerDashboard() {
     ...hyderabadDishes.map(dish => ({ ...dish, store: "Hyderabad" }))
   ];
 
+  // ==================== UPDATED: Load both order history and stats ====================
   useEffect(() => {
     const user = localStorage.getItem("username");
     const id = localStorage.getItem("customerId");
@@ -51,8 +52,10 @@ function CustomerDashboard() {
     if (user && id) {
       setUsername(user);
       setCustomerId(id);
-      loadCustomerStats(id);
-      loadOrderHistory(id); // NEW: Load order history
+      loadOrderHistory(id).then(() => {
+        // Load stats after order history is loaded to ensure accurate calculation
+        loadCustomerStats(id);
+      });
     } else {
       navigate("/");
     }
@@ -80,7 +83,8 @@ function CustomerDashboard() {
     item.name.toLowerCase().includes(searchTerm.toLowerCase())
   ) : [];
 
-  // 3️⃣ Handle dish selection from search dropdown (NEW LOGIC)
+  // ==================== UPDATED: Handle dish selection with auto-tab switch ====================
+  // 3️⃣ Handle dish selection from search dropdown (UPDATED LOGIC)
   const handleDishSelect = (dish) => {
     // Switch to the store where this dish is available
     setSelectedStore(dish.store);
@@ -93,6 +97,9 @@ function CustomerDashboard() {
     getPortionRecommendation(actualDish.id);
     checkDishStock(actualDish.id);
     setSearchTerm(""); // Clear search after selection
+    
+    // ==================== NEW: Always switch to menu tab when dish is selected ====================
+    setActiveTab("menu");
   };
 
   // 4️⃣ See AI recommended portion (mock function)
@@ -124,7 +131,8 @@ function CustomerDashboard() {
     }
   };
 
-  // 6️⃣ Place order (UPDATED: Now saves order details)
+  // ==================== UPDATED: Place order with stats reload ====================
+  // 6️⃣ Place order (UPDATED: Now saves order details and reloads stats)
   const submitOrder = async (dishId, quantity) => {
     try {
       const dish = availableDishes.find(d => d.id === dishId);
@@ -161,13 +169,8 @@ function CustomerDashboard() {
       
       alert(`✅ Order placed successfully!\n${quantity}x ${dish.name}\nOriginal: ₹${originalPrice}\nAfter AI Discount: ₹${finalPrice.toFixed(2)}\nYou saved: ₹${discountAmount.toFixed(2)}`);
       
-      // Update customer stats
-      setCustomerStats(prev => ({
-        ...prev,
-        totalOrders: prev.totalOrders + 1,
-        wasteReduced: prev.wasteReduced + wasteReduced,
-        moneySaved: prev.moneySaved + discountAmount
-      }));
+      // ==================== UPDATED: Reload stats from actual order history ====================
+      loadCustomerStats(customerId);
       
       setSelectedDish(null);
     } catch (error) {
@@ -182,13 +185,41 @@ function CustomerDashboard() {
     setFeedback({ rating: 5, comment: "" });
   };
 
-  // 8️⃣ Wastage reduction info (mock function)
+  // ==================== UPDATED: Calculate stats from actual order history ====================
+  // 8️⃣ Wastage reduction info - Calculate from actual order history
   const loadCustomerStats = async (customerId) => {
-    setCustomerStats({
-      wasteReduced: 2.5,
-      totalOrders: 2,
-      moneySaved: 240
-    });
+    try {
+      const savedOrders = localStorage.getItem(`orderHistory_${customerId}`);
+      if (savedOrders) {
+        const orders = JSON.parse(savedOrders);
+        
+        // Calculate stats from actual orders
+        const totalWasteReduced = orders.reduce((sum, order) => sum + order.wasteReduced, 0);
+        const totalOrders = orders.length;
+        const totalMoneySaved = orders.reduce((sum, order) => sum + order.discountAmount, 0);
+        
+        setCustomerStats({
+          wasteReduced: totalWasteReduced,
+          totalOrders: totalOrders,
+          moneySaved: totalMoneySaved
+        });
+      } else {
+        // If no orders, set to 0
+        setCustomerStats({
+          wasteReduced: 0,
+          totalOrders: 0,
+          moneySaved: 0
+        });
+      }
+    } catch (error) {
+      console.log("Error loading customer stats:", error);
+      // Fallback to 0 if there's an error
+      setCustomerStats({
+        wasteReduced: 0,
+        totalOrders: 0,
+        moneySaved: 0
+      });
+    }
   };
 
   // NEW: Load order history from localStorage
@@ -538,8 +569,9 @@ function CustomerDashboard() {
           </div>
         )}
 
-        {/* Dish Details Modal for Home Tab */}
-        {activeTab === "home" && selectedDish && (
+        {/* ==================== UPDATED: Single Dish Modal for ALL Tabs ==================== */}
+        {/* Dish Details Modal - Now works in ALL tabs (home, menu, stats) */}
+        {selectedDish && (
           <div className="dish-modal-overlay">
             <div className="dish-modal">
               <button className="close-modal" onClick={() => setSelectedDish(null)}>×</button>
