@@ -3,8 +3,101 @@
 /* ===== HOME SECTION STYLES ===== */
 /* Used for: Empty home tab container in JSX (activeTab === "home") */
 .home-section {
-  min-height: 60vh;
-  /* Empty for now - you can add content here later */
+  min-height: calc(100vh - 60px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Change from center to flex-start */
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.gif-container {
+  text-align: left; /* Align content to left */
+  width: auto; /* Don't take full width */
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.home-gif {
+  width: 600px;
+  height: 400px;
+  max-width: 100%;
+  max-height: calc(100vh - 60px);
+  object-fit: contain;
+  border-radius: 0;
+  box-shadow: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* For text/content sections */
+.content-container {
+  width: 100%;
+  max-width: 1200px;
+  padding: 2rem;
+  text-align: center;
+}
+
+.content-container h2 {
+  color: #333;
+  margin-bottom: 1rem;
+  font-size: 2rem;
+}
+
+.content-container p {
+  color: #666;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+/* For grid layouts */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  width: 100%;
+  max-width: 1200px;
+  padding: 2rem;
+}
+
+/* For flex layouts */
+.flex-row {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+  width: 100%;
+  max-width: 1200px;
+  padding: 2rem;
+}
+
+/* Universal content spacing */
+.home-content {
+  margin-top: 1rem;
+  padding: 0 1rem;
+}
+
+/* Utility classes for different alignments */
+.centered-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.left-aligned-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.full-width-content {
+  width: 100%;
 }
 
 /* ===== MAIN DASHBOARD CONTAINER ===== */
@@ -40,7 +133,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 30px;
-  background: white;
+  background:white;
   box-sizing: border-box;
   z-index: 1000;
   gap: 20px;

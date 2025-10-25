@@ -131,20 +131,58 @@ function CustomerDashboard() {
     }
   };
 
-  // ==================== UPDATED: Place order with stats reload ====================
-  // 6️⃣ Place order (UPDATED: Now saves order details and reloads stats)
-  const submitOrder = async (dishId, quantity) => {
-    try {
-      const dish = availableDishes.find(d => d.id === dishId);
-      const discount = 0.15;
-      const originalPrice = dish.price * quantity;
-      const discountAmount = originalPrice * discount;
-      const finalPrice = originalPrice - discountAmount;
-      const wasteReduced = 0.3 * quantity;
+  // ==================== UPDATED: Place order with backend preparation ====================
+  // 6️⃣ Place order (UPDATED: Now prepares data for backend)
+  // In CustomerDashboard.jsx - UPDATE the submitOrder function
+const submitOrder = async (dishId, quantity) => {
+  try {
+    const dish = availableDishes.find(d => d.id === dishId);
+    const discount = 0.15;
+    const originalPrice = dish.price * quantity;
+    const discountAmount = originalPrice * discount;
+    const finalPrice = originalPrice - discountAmount;
+    const wasteReduced = 0.3 * quantity;
+    
+    // Prepare order data for backend
+    const orderData = {
+      customerId: parseInt(customerId),
+      storeName: selectedStore,
+      totalAmount: parseFloat(originalPrice.toFixed(2)),
+      orderStatus: "completed",
+      orderDate: new Date().toISOString().split('T')[0], // YYYY-MM-DD
+      orderTime: new Date().toTimeString().split(' ')[0], // HH:MM:SS
+      orderItems: [
+        {
+          dishId: dish.id,
+          dishName: dish.name,
+          dishType: dish.type || "Veg", // Default to Veg if type not specified
+          dishCategory: dish.category,
+          quantity: quantity,
+          unitPrice: parseFloat(dish.price.toFixed(2)),
+          totalPrice: parseFloat((dish.price * quantity).toFixed(2))
+        }
+      ]
+    };
+
+    console.log("📦 Order Data Ready for Backend:", orderData);
+
+    // ✅ NOW ENABLED: Send to backend
+    // In CustomerDashboard.jsx - Check if you need to update the URL
+const response = await fetch('http://localhost:8080/api/orders', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify(orderData)
+});
+
+    if (response.ok) {
+      const savedOrder = await response.json();
+      console.log("✅ Order saved to database:", savedOrder);
       
-      // Create order object with full details
+      // Also save to localStorage for immediate UI update
       const newOrder = {
-        id: Date.now(), // Unique order ID
+        id: Date.now(),
         dishId: dish.id,
         dishName: dish.name,
         dishImage: dish.image,
@@ -160,24 +198,24 @@ function CustomerDashboard() {
         status: "Completed"
       };
       
-      // Save order to history
       const updatedOrderHistory = [newOrder, ...orderHistory];
       setOrderHistory(updatedOrderHistory);
-      
-      // Save to localStorage
       localStorage.setItem(`orderHistory_${customerId}`, JSON.stringify(updatedOrderHistory));
       
       alert(`✅ Order placed successfully!\n${quantity}x ${dish.name}\nOriginal: ₹${originalPrice}\nAfter AI Discount: ₹${finalPrice.toFixed(2)}\nYou saved: ₹${discountAmount.toFixed(2)}`);
       
-      // ==================== UPDATED: Reload stats from actual order history ====================
       loadCustomerStats(customerId);
-      
       setSelectedDish(null);
-    } catch (error) {
-      alert("❌ Failed to place order");
+    } else {
+      const errorText = await response.text();
+      throw new Error(`Backend error: ${errorText}`);
     }
-  };
-
+    
+  } catch (error) {
+    console.error("❌ Order Error:", error);
+    alert("❌ Failed to place order. Please try again.");
+  }
+};
   // 7️⃣ Feedback on portions/wastage (mock function)
   const submitFeedback = async (dishId, rating, comment) => {
     const dish = availableDishes.find(d => d.id === dishId);
@@ -345,11 +383,38 @@ function CustomerDashboard() {
         
         {/* Home Tab Content - Different from other tabs */}
         {activeTab === "home" && (
-          <div className="home-section">
-            {/* Add your custom home content here later */}
-            
-          </div>
-        )}
+  <div className="home-section">
+  {/* GIF Section */}
+  <div className="gif-container">
+    <img src="/ai-food-management/dashboard-gif.gif" alt="Dashboard GIF" className="home-gif" />
+  </div>
+  
+  {/* Text Content */}
+  <div className="content-container centered-content">
+    <h2>Welcome to Our Platform</h2>
+    <p>Discover amazing features and functionality</p>
+  </div>
+  
+  {/* Features Grid */}
+  <div className="features-grid">
+    <div className="feature-card">
+      <h3>Feature 1</h3>
+      <p>Description</p>
+    </div>
+    <div className="feature-card">
+      <h3>Feature 2</h3>
+      <p>Description</p>
+    </div>
+  </div>
+  
+  {/* Flex Layout */}
+  <div className="flex-row">
+    <div className="content-box">Content 1</div>
+    <div className="content-box">Content 2</div>
+    <div className="content-box">Content 3</div>
+  </div>
+</div>
+)}
 
         {/* Menu Tab Content */}
         {activeTab === "menu" && (
