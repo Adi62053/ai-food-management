@@ -1,0 +1,162 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modal-content {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    max-width: 900px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  }
+  
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 15px;
+  }
+  
+  .modal-header h2 {
+    margin: 0;
+    color: #333;
+    font-size: 1.5rem;
+  }
+  
+  .close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+  }
+  
+  .close-btn:hover {
+    color: #333;
+  }
+  
+  .store-selection {
+    margin-bottom: 25px;
+  }
+  
+  .store-selection h3 {
+    margin-bottom: 12px;
+    color: #555;
+  }
+  
+  .store-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  
+  .store-btn {
+    padding: 10px 20px;
+    border: 2px solid #e0e0e0;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+  }
+  
+  .store-btn:hover {
+    border-color: #007bff;
+    transform: translateY(-2px);
+  }
+  
+  .store-btn.active {
+    background: #007bff;
+    color: white;
+    border-color: #007bff;
+  }
+  
+  .loading {
+    text-align: center;
+    padding: 40px;
+    font-size: 1.1rem;
+    color: #666;
+  }
+  
+  .predictions-container h3 {
+    color: #333;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+  
+  .predictions-table {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .table-header {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 2fr;
+    background: #f8f9fa;
+    font-weight: bold;
+    padding: 12px 15px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .prediction-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 2fr;
+    padding: 12px 15px;
+    border-bottom: 1px solid #f0f0f0;
+    align-items: center;
+  }
+  
+  .prediction-row:last-child {
+    border-bottom: none;
+  }
+  
+  .prediction-row:hover {
+    background: #f8f9fa;
+  }
+  
+  .dish-name {
+    font-weight: 500;
+  }
+  
+  .today-sales, .predicted {
+    text-align: center;
+    font-weight: 500;
+  }
+  
+  .trend {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  .trend.hot { color: #dc3545; }
+  .trend.waste { color: #ff6b6b; }
+  .trend.slow { color: #6c757d; }
+  .trend.normal { color: #28a745; }
+  
+  .advice {
+    font-size: 0.9rem;
+    color: #555;
+  }
+  
+  .no-predictions {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+    font-style: italic;
+  }
